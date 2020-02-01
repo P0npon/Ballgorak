@@ -10,6 +10,13 @@ public class InputManager : MonoBehaviour
     public Vector2 swipeDelta;
 
 
+    private void Start()
+    {
+        var manager = GameObject.FindObjectOfType<MainManager>().GetComponent<MainManager>();
+        manager.AddListeners(AfficherSecondesDeJeu);
+    }
+
+
     // Update is called once per frame
     void Update()
     {
@@ -67,6 +74,12 @@ public class InputManager : MonoBehaviour
         }
 
 #endif
+    }
+
+
+    private void AfficherSecondesDeJeu(int seconds)
+    {
+        Debug.Log(seconds +" Seconds");
     }
 
 }
