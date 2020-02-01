@@ -22,7 +22,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Ground ground;
     [SerializeField]
-    private Rigidbody2D ballPrefab; 
+    private Rigidbody2D ballPrefab;
+    [SerializeField] GameObject Ball1;
+    [SerializeField] GameObject Ball2;
+    [SerializeField] GameObject Ball3;
+    [SerializeField] GameObject Ball4;
+    [SerializeField] GameObject Ball5;
 
 
     // Start is called before the first frame update
