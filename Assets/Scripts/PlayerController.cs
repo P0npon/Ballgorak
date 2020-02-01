@@ -62,8 +62,6 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Ball instancied");
             Rigidbody2D ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
             ball.velocity = BallDirection * speed;
-            Debug.Log(BallDirection);
-            Debug.Log(ball.velocity);
             yield return new WaitForSeconds(0.1f);
         }
     }

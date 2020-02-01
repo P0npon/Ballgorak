@@ -19,6 +19,7 @@ public class MainManager : MonoBehaviour
     public static MainManager GameManager { get { return gameManager; } }
 
     private List<Action<int>> actions = new List<Action<int>>();
+    private List<Action<int>> actionsTour = new List<Action<int>>();
 
 
     private void Awake()
@@ -39,9 +40,15 @@ public class MainManager : MonoBehaviour
         actions.Add(listener);
     }
 
+    public void AddTourListeners(Action<int> listener)
+    {
+        actionsTour.Add(listener);
+    }
+
     private void Start()
     {
         StartCoroutine(SetGameTime());
+        StartCoroutine(SetGameTour());
     }
 
     IEnumerator SetGameTime()
@@ -61,10 +68,10 @@ public class MainManager : MonoBehaviour
     {
         while (true)
         {
-            foreach (var action in actions)
+            foreach (var action in actionsTour)
             {
-                GameTime++;
-                action.Invoke(GameTime);
+                Tour++;
+                action.Invoke(Tour);
             }
             yield return new WaitForSeconds(speedTour);
         }
