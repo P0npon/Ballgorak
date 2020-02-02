@@ -65,9 +65,9 @@ public class PlayerController : MonoBehaviour
         if(ballRelease)
         {
             inputInstance.swipeDelta = Vector2.zero;
-            if(manaManager.Val > 0)
+            if(manaManager.Mana > 0)
             {
-                manaManager.Val = manaManager.Val - 1;
+                manaManager.Mana = manaManager.Mana - 1;
                 StartCoroutine(waitToReleaseBall());
             }
             

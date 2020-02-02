@@ -10,18 +10,18 @@ public class ManaManager : MonoBehaviour
     public Color AlertColor = Color.blue;
     Color startColor;
     public float Alerte = 25f;
-    private float val;
-    public float Val
+    private float mana;
+    public float Mana
     {
         get
         {
-            return val;
+            return mana;
         }
         set
         {
-            val = value;
-            val = Mathf.Clamp(val, 0, 10);
-            bar.fillAmount = val / 10;
+            mana = value;
+            mana = Mathf.Clamp(mana, 0, 10);
+            bar.fillAmount = mana / 10;
         }
     }
 
@@ -33,7 +33,7 @@ public class ManaManager : MonoBehaviour
         bar = transform.Find("Bar").GetComponent<Image>();
         txt = bar.transform.Find("Text").GetComponent<Text>();
         startColor = bar.color;
-        Val = 0;
+        Mana = 0;
 
     }
 
@@ -44,12 +44,12 @@ public class ManaManager : MonoBehaviour
     {
         if (seconds % 3==0)
         {
-            Val++;
+            Mana++;
 
           
-            txt.text = (int)Val + " Mana";
+            txt.text = (int)Mana + " Mana";
             
-            if (Val == Alerte)
+            if (Mana == Alerte)
             {
                 bar.color = AlertColor;
             }
