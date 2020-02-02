@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class LifeScript : MonoBehaviour
 {
     Image bar;
@@ -9,40 +10,41 @@ public class LifeScript : MonoBehaviour
     public Color AlertColor = Color.red;
     Color startColor;
     public float Alerte = 25f;
-    private float val;
-    public float Val
+    private float life;
+    public float Life
     {
         get
         {
-            return val;
+            return life;
         }
         set
         {
-            val = value;
-            val = Mathf.Clamp(val, 0, 100);
-            bar.fillAmount = val / 100;
+            life = value;
+            life = Mathf.Clamp(Life, 0, 100);
+            
         }
     }
 
 
     void Awake()
     {
+       
         var manager = GameObject.FindObjectOfType<MainManager>().GetComponent<MainManager>();
         manager.AddListeners(UpdateValueLife);
 
         bar = transform.Find("Bar").GetComponent<Image>();
         txt = bar.transform.Find("Text").GetComponent<Text>();
         startColor = bar.color;
-        Val = 100;
+        Life = 100;
 
     }
 
 
     void UpdateValueLife(int seconds)
     {
-        txt.text = (int)Val + "%";
+        txt.text = (int)Life + "%";
         
-        if (Val < Alerte)
+        if (Life < Alerte)
         {
             bar.color = AlertColor;
         }
@@ -52,9 +54,20 @@ public class LifeScript : MonoBehaviour
         }
         
     }
-  public  void ChangeLife(int heals)
+  public  void ChangeLife(float heals)
     {
-        Val = Val - heals;
+        
+        Life = Life - heals;
+        bar.fillAmount = Life / 100;
+
+    }
+    public void IsWinner()
+    {
+        if (Life == 0)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+       
     }
 
 }
