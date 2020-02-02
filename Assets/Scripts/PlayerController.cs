@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public bool player1;
     [SerializeField]
     private Transform wrapper;
     private const float maximumPull = 160f;
@@ -22,18 +23,21 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Ground ground;
     [SerializeField]
-    private Rigidbody2D ballPrefab;
+    private GameObject ballPrefab;
     [SerializeField] GameObject Ball1;
     [SerializeField] GameObject Ball2;
     [SerializeField] GameObject Ball3;
     [SerializeField] GameObject Ball4;
     [SerializeField] GameObject Ball5;
 
+    private GameObject selectedBall;
+
 
     // Start is called before the first frame update
     void Start()
     {
         wrapper.parent.gameObject.SetActive(false);
+        inputInstance.gameObject.GetComponent<InputManager>().SetPlayer(player1);
     }
 
     // Update is called once per frame
@@ -65,8 +69,9 @@ public class PlayerController : MonoBehaviour
         for(int i =0; i<= BallAmount;i++)
         {
             Debug.Log("Ball instancied");
-            Rigidbody2D ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
-            ball.velocity = BallDirection * speed;
+            GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
+            ball.GetComponent<Rigidbody2D>().velocity = BallDirection * speed;
+            ball.GetComponent<BallPrefab>().SetPlayer(player1);
             yield return new WaitForSeconds(0.1f);
         }
     }
@@ -78,7 +83,12 @@ public class PlayerController : MonoBehaviour
 
         if(sd != Vector2.zero)
         {
-            if(sd.y <0)
+            if(sd.y <0 && player1)
+            {
+                wrapper.parent.gameObject.SetActive(false);
+            }
+
+            if (sd.y > 0 && !player1)
             {
                 wrapper.parent.gameObject.SetActive(false);
             }
@@ -92,7 +102,7 @@ public class PlayerController : MonoBehaviour
                     wrapper.parent.gameObject.SetActive(false);
                     BallDirection = sd.normalized;
                     Debug.Log(BallDirection + "true");
-                    ballPrefab.simulated = true;
+                    ballPrefab.GetComponent<Rigidbody2D>().simulated = true;
                     ballRelease = true;
                 }
             }

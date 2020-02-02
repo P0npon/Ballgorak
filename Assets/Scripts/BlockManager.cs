@@ -42,31 +42,39 @@ public class BlockManager : MonoBehaviour
         blocks.RemoveAll(it => it == null);
         foreach(var block in blocks)
         {
-            block.transform.position = new Vector3(block.transform.position.x, block.transform.position.y - spacing, 0);
+            if (!block.GetComponent<Block>().Player1)
+            {
+                block.transform.position = new Vector3(block.transform.position.x, block.transform.position.y - spacing, 0);
+            }
+            else
+            {
+                block.transform.position = new Vector3(block.transform.position.x, block.transform.position.y + spacing, 0);
+            }
         }
         int nbSpawn = 0;
         for(int i =0;i<column;i++)
         {
             int rdm = Random.Range(0, 10);
-            if(rdm<5)
+            if(rdm<4)
             {
                 nbSpawn++;
                 var b = Instantiate(blockPrefab, new Vector3((spacing * i) - (width / 2) + offsetWidth,(height / 2) - offsetHeight, 0), Quaternion.identity);
-                b.GetComponent<Block>().InitBlock(tour);
+                b.GetComponent<Block>().InitBlock(tour,false);
                 blocks.Add(b);
+                var b2 = Instantiate(blockPrefab, new Vector3((spacing * i) - (width / 2) + offsetWidth, offsetHeight - height/2, 0), Quaternion.identity);
+                b2.GetComponent<Block>().InitBlock(tour, true);
+                blocks.Add(b2);
             }
         }
         if(nbSpawn==0)
         {
-            var b = Instantiate(blockPrefab, new Vector3((spacing * Random.Range(0, column)) - (width / 2) + offsetWidth, (height / 2) - offsetHeight, 0), Quaternion.identity);
-            b.GetComponent<Block>().InitBlock(tour);
+            int rng = Random.Range(0, column);
+            var b = Instantiate(blockPrefab, new Vector3((spacing * rng) - (width / 2) + offsetWidth, (height / 2) - offsetHeight, 0), Quaternion.identity);
+            b.GetComponent<Block>().InitBlock(tour,false);
+            blocks.Add(b);
+            var b2 = Instantiate(blockPrefab, new Vector3((spacing * rng) - (width / 2) + offsetWidth, offsetHeight, 0), Quaternion.identity);
+            b2.GetComponent<Block>().InitBlock(tour, true);
             blocks.Add(b);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

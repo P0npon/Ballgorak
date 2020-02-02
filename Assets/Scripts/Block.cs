@@ -6,21 +6,24 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     private TextMeshPro textMeshPro;
-
-    public int health;
+    public bool Player1; 
+    public float health;
 
     void Awake()
     {
         textMeshPro = GetComponentInChildren<TextMeshPro>();
     }
 
-    public void InitBlock(int health)
+    public void InitBlock(int health, bool player1)
     {
+        this.Player1 = player1;
+        textMeshPro.color = player1?Color.green:Color.red;
+        this.gameObject.layer = player1 ? LayerMask.NameToLayer("Block1") : LayerMask.NameToLayer("Block2");
         this.health = health;
         textMeshPro.text = health.ToString();
     }
 
-    public void ChangeHealth(int change)
+    public void ChangeHealth(float change)
     {
         this.health += change;
         textMeshPro.text = health.ToString();

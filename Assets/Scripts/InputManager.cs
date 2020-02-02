@@ -1,9 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    private bool player1;
+
+    public void SetPlayer(bool player1)
+    {
+        this.player1 = player1;
+    }
 
     public bool hold = false, release = false;
     public Vector2 initialPosition;
@@ -22,25 +29,35 @@ public class InputManager : MonoBehaviour
     {
         release = false;
 #if UNITY_ANDROID
-        if (Input.touches.Length > 0)
+        var halfTouch = Input.touches.ToList();
+        if (player1)
         {
-            if (Input.GetTouch(0).phase == TouchPhase.Began)
+             halfTouch = Input.touches.ToList().FindAll(it => it.position.y < Screen.height / 2);
+        }
+        else
+        {
+             halfTouch = Input.touches.ToList().FindAll(it => it.position.y > Screen.height / 2);
+        }
+
+        if (halfTouch.Count > 0 )
+        {
+            if (halfTouch[0].phase == TouchPhase.Began)
             {
                 hold = true;
-                initialPosition = Input.GetTouch(0).position;
+                initialPosition = halfTouch[0].position;
             }
 
-            else if (Input.GetTouch(0).phase == TouchPhase.Ended)
+            else if (halfTouch[0].phase == TouchPhase.Ended)
             {
 
                 Debug.Log("End");
                 release = true;
                 hold = false;
-                swipeDelta = Input.GetTouch(0).position - initialPosition;
+                swipeDelta = halfTouch[0].position - initialPosition;
             }
             if(hold)
             {
-                swipeDelta = Input.GetTouch(0).position - initialPosition;
+                swipeDelta = halfTouch[0].position - initialPosition;
             }
             else if (swipeDelta.x < 0 || swipeDelta.y < 0)
             {
