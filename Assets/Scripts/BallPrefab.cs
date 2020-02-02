@@ -26,10 +26,7 @@ public class BallPrefab : MonoBehaviour
     {
         rigidbody.velocity = constantSpeed * (rigidbody.velocity.normalized);
     }
-    private void OnDestroy()
-    {
-        player.BallLandingPosition = transform.position;
-    }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -48,6 +45,10 @@ public class BallPrefab : MonoBehaviour
             {
                 block[0].ChangeHealth(0.5f);
                 Destroy(this.gameObject);
+            }
+            else
+            {
+                block[0].ChangeHealth(-1);
             }
         }
     }

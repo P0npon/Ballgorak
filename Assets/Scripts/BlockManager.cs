@@ -72,7 +72,7 @@ public class BlockManager : MonoBehaviour
             var b = Instantiate(blockPrefab, new Vector3((spacing * rng) - (width / 2) + offsetWidth, (height / 2) - offsetHeight, 0), Quaternion.identity);
             b.GetComponent<Block>().InitBlock(tour,false);
             blocks.Add(b);
-            var b2 = Instantiate(blockPrefab, new Vector3((spacing * rng) - (width / 2) + offsetWidth, offsetHeight, 0), Quaternion.identity);
+            var b2 = Instantiate(blockPrefab, new Vector3((spacing * rng) - (width / 2) + offsetWidth, offsetHeight - height / 2, 0), Quaternion.identity);
             b2.GetComponent<Block>().InitBlock(tour, true);
             blocks.Add(b);
         }

@@ -30,12 +30,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject Ball4;
     [SerializeField] GameObject Ball5;
 
+    [SerializeField]
+    private ManaManager manaManager;
+
     private GameObject selectedBall;
+
+    MainManager manager;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        manager = GameObject.FindObjectOfType<MainManager>().GetComponent<MainManager>();
         wrapper.parent.gameObject.SetActive(false);
         inputInstance.gameObject.GetComponent<InputManager>().SetPlayer(player1);
     }
@@ -59,14 +65,19 @@ public class PlayerController : MonoBehaviour
         if(ballRelease)
         {
             inputInstance.swipeDelta = Vector2.zero;
-            StartCoroutine(waitToReleaseBall());
+            if(manaManager.Val > 0)
+            {
+                manaManager.Val = manaManager.Val - 1;
+                StartCoroutine(waitToReleaseBall());
+            }
+            
             ballRelease = false;
         }
     }
 
     IEnumerator waitToReleaseBall()
     {
-        for(int i =0; i<= BallAmount;i++)
+        for(int i =0; i<= manager.Tour;i++)
         {
             Debug.Log("Ball instancied");
             GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
@@ -83,7 +94,7 @@ public class PlayerController : MonoBehaviour
 
         if(sd != Vector2.zero)
         {
-            if(sd.y <0 && player1)
+            if(sd.y <=0 && player1)
             {
                 wrapper.parent.gameObject.SetActive(false);
             }
